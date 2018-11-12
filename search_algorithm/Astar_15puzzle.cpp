@@ -47,7 +47,7 @@ int hn(int a[][size]) { //估价函数，曼哈顿距离，小等于实际总步
 	return cost;
 }
 
-int maxn = 0;
+//int maxn = 0;
 bool dfs(int sx,int sy,int deep,int pre_move,int hx) { //sx,sy是空格的位置
 	// 若评价函数超过limit, 则返回false 
 	if(deep + hx > limit)
@@ -56,10 +56,10 @@ bool dfs(int sx,int sy,int deep,int pre_move,int hx) { //sx,sy是空格的位置
 	//hx=0, 即到达终点 
 	if(hx==0)
 		return true;
-	if(deep>maxn){
-		maxn=deep;
-		cout << "deep: " << maxn << endl;
-	}
+// 	if(deep>maxn){
+// 		maxn=deep;
+// 		cout << "deep: " << maxn << endl;
+// 	}
 	
 	int direc[3] = {-1,-1,-1};
 	int left = 0;
@@ -109,7 +109,7 @@ bool dfs(int sx,int sy,int deep,int pre_move,int hx) { //sx,sy是空格的位置
 int main() {
 	ifstream cin("in.txt");
 	int n, sx, sy;
-	maxn = 30;
+	//maxn = 30;
 	clock_t start, end;
 	cin >> n;
 	int problem[5] = {0,2,4,3,1}; 
