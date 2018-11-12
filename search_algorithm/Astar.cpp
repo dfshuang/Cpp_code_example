@@ -25,8 +25,8 @@ struct node{
 	int g;
 	int pre;
 	int sx,sy;
-	
-	node(vector<int>& vs, int gs=0, int pres=0){
+	vector<int> path;
+	node(vector<int>& vs, int gs=0, int pres=0,vector<int> pathx=vector<int>()){
 		state = 0;
 		for(int i=0;i<16;i++){
 			state = state*(unsigned long long)16 + (unsigned long long)vs[i];
@@ -37,6 +37,7 @@ struct node{
 		}
 		g=gs;
 		pre=pres;
+		path=pathx;
 	}
 	bool operator == (node& nx)const{
 		return state==nx.state;
@@ -86,7 +87,7 @@ struct node{
 }; 
 
 void print_path(){
-	for(int i=0; i<70; i++)
+	for(int i=0; i<len; i++)
 		printf("%d ",path[i]); 
 	printf("\n");	
 }
@@ -95,41 +96,49 @@ bool solve(){
 	int maxg = 0;
 	
 	node initn(vinit);
-	//initn.print();
 	
 	int limit=initn.f(); //初始曼哈顿距离 
 	printf("LowerBound: %d\n",limit);
 	
 	priority_queue<node, vector<node>, greater<node> > pri;
-	pri.push(vinit);
+	pri.push(initn);
 	
 	while(!pri.empty()){
 		node topx = pri.top();
 		pri.pop();
+		vector<int> pathx = topx.path;
 		
-		if(topx.g>0) path[topx.g-1] = topx.pre;
-		topx.print();
-		print_path();
-		cout << "---------------------\n\n";
+		
 		if(topx.h()==0){
 			len = topx.g;
+			for(int i=0;i<len;i++){
+				path[i] = topx.path[i];
+			}
 			return true;
 		}
+		//输出运行到哪个深度 
 		if(topx.g>maxg){
 			maxg=topx.g;
 			cout << "maxg: " << maxg << endl;
 		}
+		
 		vector<int> vtemp = topx.analy();
+
 		for(int i=0;i<4;i++){
 			int nx = topx.sx+dxy[i][0];
 			int ny = topx.sy+dxy[i][1];
 			if(0<=nx&&nx<4 && 0<=ny&&ny<4){
 				int pos=4*nx+ny;
-				if(vtemp[pos]==topx.pre) continue;
+				//修改路径 
+				pathx.push_back(vtemp[pos]);
+				
+				if(vtemp[pos]==topx.pre) continue;  //等于前一个移动反向时，不运行 
 				int pos_ori = 4*topx.sx+topx.sy;
+							
 				swap(vtemp[pos_ori],vtemp[pos]);
-				pri.push(node(vtemp,topx.g+1,vtemp[pos_ori]));
+				pri.push(node(vtemp,topx.g+1,vtemp[pos_ori],pathx));
 				swap(vtemp[pos_ori],vtemp[pos]);
+				pathx.pop_back();
 			}
 		} 
 	}
