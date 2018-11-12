@@ -47,19 +47,19 @@ int hn(int a[][size]) { //估价函数，曼哈顿距离，小等于实际总步
 	return cost;
 }
 
-//int maxn = 0;
-bool dfs(int sx,int sy,int deep,int pre_move,int hx) { //sx,sy是空格的位置
-	// 若评价函数超过limit, 则返回false 
+bool dfs(int sx,int sy,int deep,int pre_move,int hx) { 
+	/*
+		sx,sy是空格的位置
+    	f = g(deep) + h(hx)
+		若评价函数超过limit, 则返回false 
+    	pre_move: 先前结点走的路径对应的数字
+    */
 	if(deep + hx > limit)
 		return false;
 		
 	//hx=0, 即到达终点 
 	if(hx==0)
 		return true;
-// 	if(deep>maxn){
-// 		maxn=deep;
-// 		cout << "deep: " << maxn << endl;
-// 	}
 	
 	int direc[3] = {-1,-1,-1};
 	int left = 0;
@@ -72,6 +72,7 @@ bool dfs(int sx,int sy,int deep,int pre_move,int hx) { //sx,sy是空格的位置
 		if(w == pre_move) continue;
 		
 		if(0<=nx&&nx<size && 0<=ny&&ny<size) { //判断移动合理
+			//改变的hn的计算方式 
 			int newh = 0;
 			if(nx==sx){
 				newh = -abs(ny-goal[w][1])+abs(sy-goal[w][1]);
@@ -79,7 +80,7 @@ bool dfs(int sx,int sy,int deep,int pre_move,int hx) { //sx,sy是空格的位置
 			else{
 				newh = - abs(nx-goal[w][0])+abs(sx-goal[w][0]);
 			}
-			
+			//选择hn较少的节点先进行扩展 
 			if(newh==-1){
 				swap(board[sx][sy],board[nx][ny]);
 				path[deep]=board[sx][sy];
@@ -109,7 +110,6 @@ bool dfs(int sx,int sy,int deep,int pre_move,int hx) { //sx,sy是空格的位置
 int main() {
 	ifstream cin("in.txt");
 	int n, sx, sy;
-	//maxn = 30;
 	clock_t start, end;
 	cin >> n;
 	int problem[5] = {0,2,4,3,1}; 
