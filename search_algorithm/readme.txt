@@ -1,3 +1,5 @@
+### 15-puzzle
+
 input: file in.txt
 
 5
