@@ -44,7 +44,7 @@ void back_tracking(int r){
     //如果 r 比 N 大，则搜索完毕
     if(r >= N){
         //print_board();
-        return ;
+        return  ;
     }
     //r < N，继续搜索
     for(int i=0;i<N;i++){
